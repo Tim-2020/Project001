@@ -30,12 +30,12 @@
 		{
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
 			this.toolStripMain = new System.Windows.Forms.ToolStrip();
+			this.btnTrace2Functions = new System.Windows.Forms.ToolStripButton();
+			this.toolStripButton5 = new System.Windows.Forms.ToolStripButton();
+			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.btnExceptionOutRange = new System.Windows.Forms.ToolStripButton();
 			this.btnDivideByZero = new System.Windows.Forms.ToolStripButton();
 			this.btnCount = new System.Windows.Forms.ToolStripButton();
-			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-			this.btnTrace2Functions = new System.Windows.Forms.ToolStripButton();
-			this.toolStripButton5 = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
 			this.btnDelay = new System.Windows.Forms.ToolStripButton();
 			this.btnGCCount = new System.Windows.Forms.ToolStripButton();
@@ -70,6 +70,31 @@
 			this.toolStripMain.TabIndex = 0;
 			this.toolStripMain.Text = "toolStrip1";
 			// 
+			// btnTrace2Functions
+			// 
+			this.btnTrace2Functions.Image = ((System.Drawing.Image)(resources.GetObject("btnTrace2Functions.Image")));
+			this.btnTrace2Functions.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.btnTrace2Functions.Name = "btnTrace2Functions";
+			this.btnTrace2Functions.Size = new System.Drawing.Size(102, 43);
+			this.btnTrace2Functions.Text = "Trace 2 Functions";
+			this.btnTrace2Functions.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+			this.btnTrace2Functions.Click += new System.EventHandler(this.twoFunctionsDepthToolStripMenuItem_Click);
+			// 
+			// toolStripButton5
+			// 
+			this.toolStripButton5.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton5.Image")));
+			this.toolStripButton5.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.toolStripButton5.Name = "toolStripButton5";
+			this.toolStripButton5.Size = new System.Drawing.Size(102, 43);
+			this.toolStripButton5.Text = "Trace 3 Functions";
+			this.toolStripButton5.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+			this.toolStripButton5.Click += new System.EventHandler(this.threeFunctionsDepthToolStripMenuItem_Click);
+			// 
+			// toolStripSeparator2
+			// 
+			this.toolStripSeparator2.Name = "toolStripSeparator2";
+			this.toolStripSeparator2.Size = new System.Drawing.Size(6, 46);
+			// 
 			// btnExceptionOutRange
 			// 
 			this.btnExceptionOutRange.Image = ((System.Drawing.Image)(resources.GetObject("btnExceptionOutRange.Image")));
@@ -96,34 +121,9 @@
 			this.btnCount.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.btnCount.Name = "btnCount";
 			this.btnCount.Size = new System.Drawing.Size(104, 43);
-			this.btnCount.Text = "Count Exceptions";
+			this.btnCount.Text = "Exceptions Count";
 			this.btnCount.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
 			this.btnCount.Click += new System.EventHandler(this.btnCount_Click);
-			// 
-			// toolStripSeparator2
-			// 
-			this.toolStripSeparator2.Name = "toolStripSeparator2";
-			this.toolStripSeparator2.Size = new System.Drawing.Size(6, 46);
-			// 
-			// btnTrace2Functions
-			// 
-			this.btnTrace2Functions.Image = ((System.Drawing.Image)(resources.GetObject("btnTrace2Functions.Image")));
-			this.btnTrace2Functions.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.btnTrace2Functions.Name = "btnTrace2Functions";
-			this.btnTrace2Functions.Size = new System.Drawing.Size(102, 43);
-			this.btnTrace2Functions.Text = "Trace 2 Functions";
-			this.btnTrace2Functions.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-			this.btnTrace2Functions.Click += new System.EventHandler(this.twoFunctionsDepthToolStripMenuItem_Click);
-			// 
-			// toolStripButton5
-			// 
-			this.toolStripButton5.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton5.Image")));
-			this.toolStripButton5.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.toolStripButton5.Name = "toolStripButton5";
-			this.toolStripButton5.Size = new System.Drawing.Size(102, 43);
-			this.toolStripButton5.Text = "Trace 3 Functions";
-			this.toolStripButton5.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-			this.toolStripButton5.Click += new System.EventHandler(this.threeFunctionsDepthToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator3
 			// 
@@ -135,8 +135,8 @@
 			this.btnDelay.Image = ((System.Drawing.Image)(resources.GetObject("btnDelay.Image")));
 			this.btnDelay.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.btnDelay.Name = "btnDelay";
-			this.btnDelay.Size = new System.Drawing.Size(80, 43);
-			this.btnDelay.Text = "Count delays";
+			this.btnDelay.Size = new System.Drawing.Size(81, 43);
+			this.btnDelay.Text = "Delays Count";
 			this.btnDelay.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
 			this.btnDelay.Click += new System.EventHandler(this.btnDelay_Click);
 			// 
@@ -145,8 +145,8 @@
 			this.btnGCCount.Image = ((System.Drawing.Image)(resources.GetObject("btnGCCount.Image")));
 			this.btnGCCount.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.btnGCCount.Name = "btnGCCount";
-			this.btnGCCount.Size = new System.Drawing.Size(99, 43);
-			this.btnGCCount.Text = "Count GC Count";
+			this.btnGCCount.Size = new System.Drawing.Size(63, 43);
+			this.btnGCCount.Text = "GC Count";
 			this.btnGCCount.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
 			this.btnGCCount.Click += new System.EventHandler(this.btnGCCount_Click);
 			// 

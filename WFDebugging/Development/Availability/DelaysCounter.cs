@@ -47,9 +47,9 @@ namespace WFDebugging.Development.Availability
 			}
 		}
 
-		public static void Reset(long Threshold)
+		public static void Reset(long threshold)
 		{
-			m_Threshold = Threshold;
+			m_Threshold = threshold;
 
 			Delays500ms = 0;
 			Delays100ms = 0;

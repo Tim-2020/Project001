@@ -5,7 +5,7 @@ namespace WFDebugging.Development.Console
 {
 	public class ConsoleWritter : TextWriter
 	{
-		private ConsoleWritter(IConsoleRecevier currentReceiver)
+		private ConsoleWritter(IConsoleReceiver currentReceiver)
 		{
 			m_Receiver = currentReceiver;
 			System.Console.SetOut(this);
@@ -14,13 +14,13 @@ namespace WFDebugging.Development.Console
 		#region Fields
 
 		private static ConsoleWritter m_Instance = null;
-		private readonly IConsoleRecevier m_Receiver;
+		private readonly IConsoleReceiver m_Receiver;
 
 		#endregion
 
 		#region Static
 
-		public static void Initialize(IConsoleRecevier currentReceiver)
+		public static void Initialize(IConsoleReceiver currentReceiver)
 		{
 			if (m_Instance == null)
 			{

@@ -9,7 +9,7 @@ namespace WFDebugging.Development.Exceptions
         private static object m_SyncObject = new object();
 		private static PerformanceCounter m_PerfomanceCounter = null;
 
-		public static long Calculate(string InstanceName)
+		public static long Calculate(string instanceName)
 		{
             lock (m_SyncObject)
             {
@@ -18,7 +18,7 @@ namespace WFDebugging.Development.Exceptions
                     m_PerfomanceCounter = new PerformanceCounter();
                     m_PerfomanceCounter.CategoryName = ".NET CLR Exceptions";
                     m_PerfomanceCounter.CounterName = "# of Exceps Thrown";
-                    m_PerfomanceCounter.InstanceName = InstanceName;
+                    m_PerfomanceCounter.InstanceName = instanceName;
                     m_PerfomanceCounter.BeginInit();
                 }
             }

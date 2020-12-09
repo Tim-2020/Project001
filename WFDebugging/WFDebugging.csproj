@@ -51,7 +51,7 @@
     <Compile Include="Additional\HardWork.cs" />
     <Compile Include="Development\Availability\DelaysCounter.cs" />
     <Compile Include="Development\Console\ConsoleWritter.cs" />
-    <Compile Include="Development\Console\IConsoleRecevier.cs" />
+    <Compile Include="Development\Console\IConsoleReceiver.cs" />
     <Compile Include="Development\Exceptions\ExceptionCounter.cs" />
     <Compile Include="Development\Memory\MemoryWatcher.cs" />
     <Compile Include="Development\Trace\TraceBuilder.cs" />

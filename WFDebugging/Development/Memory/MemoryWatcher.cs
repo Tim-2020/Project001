@@ -38,7 +38,7 @@ namespace WFDebugging.Development.Memory
 			}
 		}
 
-		private static void Calculate(int Index)
+		private static void Calculate(int index)
 		{
 			int Count = 0;
 			long Last = 0;
@@ -46,7 +46,7 @@ namespace WFDebugging.Development.Memory
 
 			for (int i = 0, l = m_MemoryValues.Length; i < l; i++)
 			{
-				long Current = m_MemoryValues[(l - i + Index) % l];
+				long Current = m_MemoryValues[(l - i + index) % l];
 				long Delta = Current - Last;
 
 				if (Current == 0)

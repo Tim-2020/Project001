@@ -14,7 +14,7 @@ using WFDebugging.Development.Trace;
 
 namespace WFDebugging
 {
-	public partial class MainForm : Form, IConsoleRecevier
+	public partial class MainForm : Form, IConsoleReceiver
 	{
 		public MainForm()
 		{
