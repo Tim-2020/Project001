@@ -14,221 +14,225 @@ using WFDebugging.Development.Trace;
 
 namespace WFDebugging
 {
-	public partial class MainForm : Form, IConsoleReceiver
-	{
-		public MainForm()
-		{
-			InitializeComponent();
-			Icon = MainResource.recycling;
-			ConsoleWritter.Initialize(this);
-			DelaysCounter.Reset(50);
-			MemoryWatcher.Reset();
-		}
+    public partial class MainForm : Form, IConsoleReceiver
+    {
+        #region Fields
 
-		static MainForm()
-		{
-			var c = new PerformanceCounterCategory(".NET CLR Exceptions");
-			var inst = c.GetInstanceNames();
-			Assembly asm = Assembly.GetExecutingAssembly();
+        private static string _InstanceName = null;
+        private HardWork _HardWork = null;
 
-			int indexcoma = asm.ToString().IndexOf(',');
-			string asmName = asm.ToString().Substring(0, indexcoma);
-			string s = inst.FirstOrDefault(a => a == asmName);
-			if (string.IsNullOrEmpty(s) == true)
-				s = "w3wp";
+        #endregion
 
-			m_InstanceName = s;
-		}
+        #region Constructor
 
-		#region Constants
+        public MainForm()
+        {
+            InitializeComponent();
+            Icon = MainResource.recycling;
+            ConsoleWritter.Initialize(this);
+            DelaysCounter.Reset(50);
+            MemoryWatcher.Reset();
+        }
 
-		private const int CONSOLE_SIZE = 128;
+        static MainForm()
+        {
+            var c = new PerformanceCounterCategory(".NET CLR Exceptions");
+            var inst = c.GetInstanceNames();
+            Assembly asm = Assembly.GetExecutingAssembly();
 
-		#endregion
+            int indexcoma = asm.ToString().IndexOf(',');
+            string asmName = asm.ToString().Substring(0, indexcoma);
+            string s = inst.FirstOrDefault(a => a == asmName);
+            if (string.IsNullOrEmpty(s) == true)
+                s = "w3wp";
 
-		#region Fields
+            _InstanceName = s;
+        }
 
-		private static string m_InstanceName = null;
-		private HardWork m_HardWork = null;
+        #endregion
 
-		#endregion
+        #region Constants
 
-		#region IConsoleRecevier
+        private const int CONSOLE_SIZE = 128;
 
-		public void Put(string value)
-		{
-			edConsole.Text += value;
+        #endregion
 
-			if (edConsole.Lines.Length >= CONSOLE_SIZE)
-			{
-				int firstIndex = edConsole.Lines[0].Length;
-				int secondIndex = edConsole.Text.IndexOf(edConsole.Lines[1], firstIndex);
-				if (firstIndex == secondIndex && secondIndex < edConsole.Text.Length) secondIndex++;
-				edConsole.Text = edConsole.Text.Substring(secondIndex);
-			}
-			edConsole.SelectionStart = edConsole.Text.Length;
-			edConsole.ScrollToCaret();
-		}
+        #region IConsoleRecevier
 
-		#endregion
+        public void Put(string value)
+        {
+            edConsole.Text += value;
 
-		#region Private
+            if (edConsole.Lines.Length >= CONSOLE_SIZE)
+            {
+                int firstIndex = edConsole.Lines[0].Length;
+                int secondIndex = edConsole.Text.IndexOf(edConsole.Lines[1], firstIndex);
+                if (firstIndex == secondIndex && secondIndex < edConsole.Text.Length) secondIndex++;
+                edConsole.Text = edConsole.Text.Substring(secondIndex);
+            }
+            edConsole.SelectionStart = edConsole.Text.Length;
+            edConsole.ScrollToCaret();
+        }
 
-		private void function0(string FirstName, string LastName)
-		{
-			Console.WriteLine("function 0");
-			function1(FirstName, LastName);			
-		}
+        #endregion
 
-		private void function1(string FirstName, string LastName)
-		{
-			Console.WriteLine("function 1");
-			function2(FirstName, LastName);			
-		}
+        #region Private
 
-		private void function2(string FirstName, string LastName)
-		{
-			Console.WriteLine("function 2");
-			IEnumerable<MethodBase> methods = TraceBuilder.Build();
+        private void function0(string FirstName, string LastName)
+        {
+            Console.WriteLine("function 0");
+            function1(FirstName, LastName);
+        }
 
-			bool wasFirst = false;
-			Console.WriteLine();
-			Console.WriteLine("Trace stack:");
+        private void function1(string FirstName, string LastName)
+        {
+            Console.WriteLine("function 1");
+            function2(FirstName, LastName);
+        }
 
-			foreach (var method in methods)
-			{
-				if (!wasFirst)
-				{
-					wasFirst = method.Name == LastName;
-				}
+        private void function2(string FirstName, string LastName)
+        {
+            Console.WriteLine("function 2");
+            IEnumerable<MethodBase> methods = TraceBuilder.Build();
 
-				if (wasFirst)
-				{
-					ParameterInfo[] parameters = method.GetParameters();
+            bool wasFirst = false;
+            Console.WriteLine();
+            Console.WriteLine("Trace stack:");
 
-					Console.WriteLine("Function: " + method.Name);
-					Console.Write("Parameters: ");
+            foreach (var method in methods)
+            {
+                if (!wasFirst)
+                {
+                    wasFirst = method.Name == LastName;
+                }
 
-					for (int i = 0; i < parameters.Length; i++)
-					{
-						if (i > 0) Console.Write(", ");
-						Console.Write(string.Format("\t{0}: {1}", parameters[i].Name, parameters[i].ParameterType.ToString()));
-					}
+                if (wasFirst)
+                {
+                    ParameterInfo[] parameters = method.GetParameters();
 
-					Console.WriteLine();
-				}
+                    Console.WriteLine("Function: " + method.Name);
+                    Console.Write("Parameters: ");
 
-				if (method.Name == FirstName)
-					break;
-			}			
-		}
+                    for (int i = 0; i < parameters.Length; i++)
+                    {
+                        if (i > 0) Console.Write(", ");
+                        Console.Write(string.Format("\t{0}: {1}", parameters[i].Name, parameters[i].ParameterType.ToString()));
+                    }
 
-		#endregion
+                    Console.WriteLine();
+                }
 
-		#region Events
+                if (method.Name == FirstName)
+                    break;
+            }
+        }
 
-		private void outOfRangeExceptionToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			try
-			{
-				int[] tempArray = new int[4];
+        #endregion
 
-				for (int i = 0; i < 10; i++)
-					tempArray[i] = i;
+        #region Events
 
-				#region Never execute. Just "Release" not to optimize code
+        private void outOfRangeExceptionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                int[] tempArray = new int[4];
 
-				Console.WriteLine("Number of elements: " + tempArray.Length);
+                for (int i = 0; i < 10; i++)
+                    tempArray[i] = i;
 
-				#endregion
-			}
-			catch(Exception ex)
-			{
-				Console.WriteLine();
-				Console.WriteLine(ex.ToString());
-			}
-		}
+                #region Never execute. Just "Release" not to optimize code
 
-		private void zeroDivisionExceptionToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			try
-			{
-				int a = 5;
-				int b = 0;
-				int c = a / b;
+                Console.WriteLine("Number of elements: " + tempArray.Length);
 
-				#region Never execute. Just "Release" not to optimize code
+                #endregion
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine();
+                Console.WriteLine(ex.ToString());
+            }
+        }
 
-				Console.WriteLine(string.Format("{0} {1} {2}", a, b, c));
+        private void zeroDivisionExceptionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                int a = 5;
+                int b = 0;
+                int c = a / b;
 
-				#endregion
-			}
-			catch (Exception ex)
-			{
-				Console.WriteLine();
-				Console.WriteLine(ex.ToString());
-			}
-		}
+                #region Never execute. Just "Release" not to optimize code
 
-		private void btnCount_Click(object sender, EventArgs e)
-		{
-			Console.WriteLine();
-			Console.WriteLine($"Exceptions count: {ExceptionCounter.Calculate(m_InstanceName)}");
-		}
+                Console.WriteLine(string.Format("{0} {1} {2}", a, b, c));
 
-		private void twoFunctionsDepthToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			Console.WriteLine();
-			function1("function1", "function2");
-		}
+                #endregion
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine();
+                Console.WriteLine(ex.ToString());
+            }
+        }
 
-		private void threeFunctionsDepthToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			Console.WriteLine();
-			function0("function0", "function2");
-		}
+        private void btnCount_Click(object sender, EventArgs e)
+        {
+            Console.WriteLine();
+            Console.WriteLine($"Exceptions count: {ExceptionCounter.Calculate(_InstanceName)}");
+        }
 
-		private void btnDelay_Click(object sender, EventArgs e)
-		{
-			Console.WriteLine();
-			Console.WriteLine($"Max delay: {DelaysCounter.MaxDelay:N0}ms");
-			Console.WriteLine($"Total delay: {DelaysCounter.TotalDelays:N0}ms");
-			Console.WriteLine($"Delays 500ms: {DelaysCounter.Delays500ms:N0}");
-			Console.WriteLine($"Delays 100ms: {DelaysCounter.Delays100ms:N0}");
-			Console.WriteLine($"Delays 50ms:  {DelaysCounter.Delays50ms:N0}");
-		}
+        private void twoFunctionsDepthToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Console.WriteLine();
+            function1("function1", "function2");
+        }
 
-		private void btnGCCount_Click(object sender, EventArgs e)
-		{
-			Console.WriteLine();
-			Console.WriteLine($"Number of GC Handling: {MemoryWatcher.CurrentGCCount}");
-			Console.WriteLine($"Worst GC Handling: {MemoryWatcher.WorstGCCount}");
-			Console.WriteLine($"Memory usage: {GC.GetTotalMemory(false)}");
-			for (int i = 0, l = GC.MaxGeneration; i <= l; i++)
-				Console.WriteLine($"Generation {i}: {GC.CollectionCount(i)}");
-		}
+        private void threeFunctionsDepthToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Console.WriteLine();
+            function0("function0", "function2");
+        }
 
-		private void btnRunWork_Click(object sender, EventArgs e)
-		{
-			if (m_HardWork == null)
-			{
-				m_HardWork = new HardWork();
-			}
-			else
-			{
-				m_HardWork.Stop();
-				m_HardWork = null;
-			}
+        private void btnDelay_Click(object sender, EventArgs e)
+        {
+            Console.WriteLine();
+            Console.WriteLine($"Max delay: {DelaysCounter.MaxDelay:N0}ms");
+            Console.WriteLine($"Total delay: {DelaysCounter.TotalDelays:N0}ms");
+            Console.WriteLine($"Delays 500ms: {DelaysCounter.Delays500ms:N0}");
+            Console.WriteLine($"Delays 100ms: {DelaysCounter.Delays100ms:N0}");
+            Console.WriteLine($"Delays 50ms:  {DelaysCounter.Delays50ms:N0}");
+        }
 
-			btnRunWork.Checked = m_HardWork != null;
-		}
+        private void btnGCCount_Click(object sender, EventArgs e)
+        {
+            Console.WriteLine();
+            Console.WriteLine($"Number of GC Handling: {MemoryWatcher.CurrentGCCount}");
+            Console.WriteLine($"Worst GC Handling: {MemoryWatcher.WorstGCCount}");
+            Console.WriteLine($"Memory usage: {GC.GetTotalMemory(false)}");
+            for (int i = 0, l = GC.MaxGeneration; i <= l; i++)
+                Console.WriteLine($"Generation {i}: {GC.CollectionCount(i)}");
+        }
 
-		private void btnWorkInfo_Click(object sender, EventArgs e)
-		{
-			if (m_HardWork != null)
-				m_HardWork.Print();
-		}
+        private void btnRunWork_Click(object sender, EventArgs e)
+        {
+            if (_HardWork == null)
+            {
+                _HardWork = new HardWork();
+            }
+            else
+            {
+                _HardWork.Stop();
+                _HardWork = null;
+            }
 
-		#endregion
-	}
+            btnRunWork.Checked = _HardWork != null;
+        }
+
+        private void btnWorkInfo_Click(object sender, EventArgs e)
+        {
+            if (_HardWork != null)
+                _HardWork.Print();
+        }
+
+        #endregion
+    }
 }

@@ -3,63 +3,67 @@ using System.Text;
 
 namespace WFDebugging.Development.Console
 {
-	public class ConsoleWritter : TextWriter
-	{
-		private ConsoleWritter(IConsoleReceiver currentReceiver)
-		{
-			m_Receiver = currentReceiver;
-			System.Console.SetOut(this);
-		}
+    public class ConsoleWritter : TextWriter
+    {
+        #region Fields
 
-		#region Fields
+        private static ConsoleWritter _Instance = null;
+        private readonly IConsoleReceiver _Receiver;
 
-		private static ConsoleWritter m_Instance = null;
-		private readonly IConsoleReceiver m_Receiver;
+        #endregion
 
-		#endregion
+        #region Constructor
 
-		#region Static
+        private ConsoleWritter(IConsoleReceiver currentReceiver)
+        {
+            _Receiver = currentReceiver;
+            System.Console.SetOut(this);
+        }
 
-		public static void Initialize(IConsoleReceiver currentReceiver)
-		{
-			if (m_Instance == null)
-			{
-				m_Instance = new ConsoleWritter(currentReceiver);
-			}
-		}
+        #endregion
 
-		#endregion
+        #region Static
 
-		#region Override
+        public static void Initialize(IConsoleReceiver currentReceiver)
+        {
+            if (_Instance == null)
+            {
+                _Instance = new ConsoleWritter(currentReceiver);
+            }
+        }
 
-		public override Encoding Encoding
-		{
-			get
-			{
-				return Encoding.UTF8;
-			}
-		}
+        #endregion
 
-		public override void Write(char value)
-		{
-			m_Receiver.Put(new string(value, 1));
-		}
+        #region Override
 
-		public override void Write(char[] buffer)
-		{
-			m_Receiver.Put(new string(buffer));
-		}
+        public override Encoding Encoding
+        {
+            get
+            {
+                return Encoding.UTF8;
+            }
+        }
 
-		public override void Write(string value)
-		{
-			m_Receiver.Put(value);
-		}
+        public override void Write(char value)
+        {
+            _Receiver.Put(new string(value, 1));
+        }
 
-		public override void Write(char[] buffer, int index, int count)
-		{
-			m_Receiver.Put(new string(buffer, index, count));
-		}
+        public override void Write(char[] buffer)
+        {
+            _Receiver.Put(new string(buffer));
+        }
 
-		#endregion
-	}
+        public override void Write(string value)
+        {
+            _Receiver.Put(value);
+        }
+
+        public override void Write(char[] buffer, int index, int count)
+        {
+            _Receiver.Put(new string(buffer, index, count));
+        }
+
+        #endregion
+    }
 }

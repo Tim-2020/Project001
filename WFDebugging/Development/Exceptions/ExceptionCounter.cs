@@ -4,26 +4,26 @@ using System.Diagnostics;
 
 namespace WFDebugging.Development.Exceptions
 {
-	public class ExceptionCounter
-	{
-        private static object m_SyncObject = new object();
-		private static PerformanceCounter m_PerfomanceCounter = null;
+    public class ExceptionCounter
+    {
+        private static object _SyncObject = new object();
+        private static PerformanceCounter _PerfomanceCounter = null;
 
-		public static long Calculate(string instanceName)
-		{
-            lock (m_SyncObject)
+        public static long Calculate(string instanceName)
+        {
+            lock (_SyncObject)
             {
-                if (m_PerfomanceCounter == null)
+                if (_PerfomanceCounter == null)
                 {
-                    m_PerfomanceCounter = new PerformanceCounter();
-                    m_PerfomanceCounter.CategoryName = ".NET CLR Exceptions";
-                    m_PerfomanceCounter.CounterName = "# of Exceps Thrown";
-                    m_PerfomanceCounter.InstanceName = instanceName;
-                    m_PerfomanceCounter.BeginInit();
+                    _PerfomanceCounter = new PerformanceCounter();
+                    _PerfomanceCounter.CategoryName = ".NET CLR Exceptions";
+                    _PerfomanceCounter.CounterName = "# of Exceps Thrown";
+                    _PerfomanceCounter.InstanceName = instanceName;
+                    _PerfomanceCounter.BeginInit();
                 }
             }
 
-            return m_PerfomanceCounter.RawValue;
+            return _PerfomanceCounter.RawValue;
         }
-	}
+    }
 }
