@@ -9,6 +9,10 @@ namespace WFDebugging.Development.Memory
 {
     public class MemoryWatcher
     {
+        private static readonly Thread _Thread;
+        private static long[] _MemoryValues;
+        private static int _Index = 0;
+
         static MemoryWatcher()
         {
             _Index = 0;
@@ -17,10 +21,6 @@ namespace WFDebugging.Development.Memory
             _Thread.IsBackground = true;
             _Thread.Start();
         }
-
-        private static readonly Thread _Thread;
-        private static long[] _MemoryValues;
-        private static int _Index = 0;
 
         private static void ThreadWatcher()
         {
